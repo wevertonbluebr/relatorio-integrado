@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Integrado — Igreja</title>
+
+<style>
+  :root {
+    --azul: #1a3a5c;
+    --azul-medio: #2c5f8a;
+    --azul-claro: #4a8bb8;
+    --dourado: #c9a84c;
+    --dourado-claro: #e8c97a;
+    --creme: #faf7f2;
+    --branco: #ffffff;
+    --cinza-texto: #3d3d3d;
+    --cinza-leve: #f0ede8;
+    --sombra: 0 4px 24px rgba(26,58,92,0.10);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--creme);
+    color: var(--cinza-texto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-medio) 60%, var(--azul-claro) 100%);
+    padding: 36px 24px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+  .header-cross {
+    font-size: 28px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+  .header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--branco);
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+  }
+  .header p {
+    color: var(--dourado-claro);
+    font-size: 0.88rem;
+    margin-top: 6px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* TELA DE SELEÇÃO */
+  #tela-selecao { display: block; }
+  #tela-formulario { display: none; }
+  #tela-confirmacao { display: none; }
+
+  .card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    box-shadow: var(--sombra);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+
+  .card-titulo {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--azul);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .card-sub {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  /* NOME DO RESPONSÁVEL */
+  .campo-nome {
+    margin-bottom: 8px;
+  }
+  .campo-nome label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--azul);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 7px;
+  }
+  .campo-nome input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid #e0dbd2;
+    border-radius: 10px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    outline: none;
+  }
+  .campo-nome input:focus {
+    border-color: var(--azul-claro);
+    background: #fff;
+  }
+
+  /* GRID DE DEPARTAMENTOS */
+  .depto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 400px) {
+    .depto-grid { grid-template-columns: 1fr; }
+  }
+
+  .depto-btn {
+    background: var(--creme);
+    border: 2px solid #e0dbd2;
+    border-radius: 12px;
+    padding: 14px 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+  .depto-btn:hover {
+    border-color: var(--azul-claro);
+    background: #eef5fb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44,95,138,0.12);
+  }
+  .depto-btn:active { transform: scale(0.97); }
+  .depto-icon { font-size: 1.6rem; }
+  .depto-nome {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--azul);
+    line-height: 1.2;
+  }
+
+  /* FORMULÁRIO */
+  .depto-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--cinza-leve);
+  }
+  .depto-header-icon {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .depto-header-info h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--azul);
+    font-size: 1.2rem;
+  }
+  .depto-header-info p {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 2px;
+  }
+
+  .pergunta-bloco {
+    margin-bottom: 22px;
+  }
+  .pergunta-numero {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .pergunta-texto {
+    font-size: 0.97rem;
+    color: var(--cinza-texto);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+
+  .resposta-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e0dbd2;
+    border-radius: 10px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 1rem;
+    color: var(--cinza-texto);
+    background: var(--creme);
+    transition: border-color 0.2s;
+    min-height: 52px;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .resposta-input:focus {
+    border-color: var(--azul-claro);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(74,139,184,0.1);
+  }
+
+  /* BOTÕES */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s ease;
+    text-decoration: none;
+    width: 100%;
+  }
+  .btn-principal {
+    background: linear-gradient(135deg, var(--dourado), var(--dourado-claro));
+    color: var(--azul);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+  }
+  .btn-principal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,168,76,0.45);
+  }
+  .btn-principal:active { transform: scale(0.98); }
+
+  .btn-voltar {
+    background: transparent;
+    border: 2px solid #ddd;
+    color: #888;
+    margin-bottom: 16px;
+    width: auto;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+  .btn-voltar:hover { border-color: var(--azul-claro); color: var(--azul); }
+
+  .btn-wpp {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.30);
+    font-size: 1.05rem;
+    padding: 16px 24px;
+  }
+  .btn-wpp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(37,211,102,0.40);
+  }
+
+  /* CONFIRMAÇÃO */
+  .confirmacao-icone {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+  }
+  .confirmacao-titulo {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--azul);
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .confirmacao-sub {
+    color: #888;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .preview-respostas {
+    background: var(--cinza-leve);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--cinza-texto);
+    white-space: pre-wrap;
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid #e0dbd2;
+  }
+
+  .aviso {
+    background: #fff8e1;
+    border-left: 4px solid var(--dourado);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    color: #7a5c00;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* PROGRESSO */
+  .progresso-bar {
+    height: 4px;
+    background: #e0dbd2;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progresso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--azul), var(--azul-claro));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .divisor {
+    height: 1px;
+    background: var(--cinza-leve);
+    margin: 20px 0;
+  }
+
+  /* Animação de entrada */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card { animation: fadeUp 0.35s ease both; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-cross">✝</div>
+  <h1>Relatório Integrado</h1>
+  <p>Responda as perguntas do seu departamento</p>
+</div>
+
+<div class="container">
+
+  <!-- TELA 1: SELEÇÃO -->
+  <div id="tela-selecao">
+    <div class="card">
+      <div class="card-titulo">Olá! 👋</div>
+      <div class="card-sub">Preencha seu nome e escolha o departamento para responder as perguntas correspondentes.</div>
+
+      <div class="campo-nome">
+        <label>Seu nome completo</label>
+        <input type="text" id="nome-responsavel" placeholder="Ex: João da Silva" autocomplete="name">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-titulo">Selecione seu departamento</div>
+      <div class="card-sub">Toque no seu departamento para começar o preenchimento.</div>
+      <div class="depto-grid" id="depto-grid"></div>
+    </div>
+  </div>
+
+  <!-- TELA 2: FORMULÁRIO -->
+  <div id="tela-formulario">
+    <button class="btn btn-voltar" onclick="voltarSelecao()">← Voltar</button>
+    <div class="card">
+      <div class="depto-header">
+        <div class="depto-header-icon" id="form-icon"></div>
+        <div class="depto-header-info">
+          <h2 id="form-titulo"></h2>
+          <p id="form-subtitulo"></p>
+        </div>
+      </div>
+      <div class="progresso-bar"><div class="progresso-fill" id="progresso-fill"></div></div>
+      <div id="perguntas-container"></div>
+      <div class="divisor"></div>
+      <button class="btn btn-principal" onclick="gerarMensagem()">
+        ✅ Revisar e enviar respostas
+      </button>
+    </div>
+  </div>
+
+  <!-- TELA 3: CONFIRMAÇÃO -->
+  <div id="tela-confirmacao">
+    <div class="card">
+      <div class="confirmacao-icone">📋</div>
+      <div class="confirmacao-titulo">Pronto para enviar!</div>
+      <div class="confirmacao-sub">Confira abaixo o resumo das suas respostas antes de enviar pelo WhatsApp.</div>
+      <div class="preview-respostas" id="preview-texto"></div>
+      <div class="aviso">
+        ⚠️ Ao clicar em "Enviar pelo WhatsApp", o aplicativo será aberto com as respostas já formatadas. Basta confirmar o envio.
+      </div>
+      <button class="btn btn-wpp" id="btn-wpp-enviar">
+        <span>📲</span> Enviar pelo WhatsApp
+      </button>
+      <div style="height:12px"></div>
+      <button class="btn btn-voltar" style="width:100%;text-align:center;" onclick="voltarFormulario()">
+        ← Corrigir respostas
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DADOS = [
+  {
+    nome: "Ancionato",
+    icon: "🏛️",
+    perguntas: [
+      "Quantos membros participaram de programas relacionados à Identidade Profética da IASD neste trimestre?",
+      "Quantos oficiais participaram de programas de formação de liderança (realizados pela igreja local ou pelo campo-união) neste trimestre?",
+      "Número de anciãos/anciãs da igreja ou Diretores de grupo organizado."
+    ]
+  },
+  {
+    nome: "Mordomia",
+    icon: "💰",
+    perguntas: [
+      "Sua igreja está ministrando algum curso sobre crenças fundamentais ou estilo de vida adventista para os recém-batizados? (ex: Crescendo em Cristo)",
+      "Antes de recolher a oferta no culto divino, são apresentados os testemunhos "Provai e Vede"?",
+      "Foi pregado um sermão por mês sobre fidelidade a Deus?",
+      "Foi realizado o diagnóstico espiritual da igreja incluindo o plano de visitação?",
+      "A igreja realizou os 10 Dias de Clamor?"
+    ]
+  },
+  {
+    nome: "Ministério Pessoal",
+    icon: "🙏",
+    perguntas: [
+      "Quantos membros foram ensinados a desenvolver os seus dons neste trimestre?",
+      "Número de pessoas que estão ministrando Estudos Bíblicos (individual, em duplas, etc.).",
+      "Número de treinamentos/encontros missionários (duplas missionárias, instrutor bíblico, Classes Bíblicas, Pequenos Grupos, etc.).",
+      "Número de Classes Bíblicas em funcionamento.",
+      "Número de pessoas recebendo Estudos Bíblicos (por todos os métodos missionários).",
+      "Número de duplas missionárias ministrando Estudos Bíblicos.",
+      "Pontos de pregação na Semana Santa: Igreja, PGs, salão, online (Zoom, YouTube, Facebook, etc.).",
+      "Total de amigos (interessados) presentes na Semana Santa."
+    ]
+  },
+  {
+    nome: "Escola Sabatina",
+    icon: "📖",
+    perguntas: [
+      "Número de alunos que estudam diariamente a lição por classe (bebês, iniciantes, infantis, primários, pré-adolescentes, jovens, adultos, classes bíblicas, filiais).",
+      "Número de alunos da classe envolvidos em frentes missionárias (Classes Bíblicas, Pequenos Grupos, Estudos Bíblicos, Evangelismo Público, etc.) por classe.",
+      "É realizada a Classe de Professores?",
+      "Número de Pequenos Grupos da igreja.",
+      "Número de Unidades de Ação (Classes).",
+      "Número de professores em cada classe.",
+      "Número de alunos da Escola Sabatina.",
+      "Número de alunos presentes.",
+      "Número de pessoas que têm sua lição da Escola Sabatina.",
+      "Número de pessoas levadas ao batismo por influência da Unidade de Ação/PG.",
+      "Número de alunos que estão dando estudos bíblicos."
+    ]
+  },
+  {
+    nome: "ASA",
+    icon: "🤝",
+    perguntas: [
+      "Número de projetos realizados em favor de pessoas necessitadas na comunidade.",
+      "Número de pessoas beneficiadas pelos projetos realizados na comunidade."
+    ]
+  },
+  {
+    nome: "Evangelismo",
+    icon: "📣",
+    perguntas: [
+      "Número de campanhas evangelísticas em geral.",
+      "Número de programas de alcance evangelístico com crianças e adolescentes (Semana Santa, Semana de Evangelismo, Evangelismo Kids, Sou Missionário Kids e Teens, Geração Missionária, WAR / É Guerra, etc.).",
+      "A igreja realiza cultos evangelísticos semanais aos domingos?"
+    ]
+  },
+  {
+    nome: "Possibilidades",
+    icon: "♿",
+    perguntas: [
+      "Sua igreja elegeu um líder do Ministério Adventista das Possibilidades?",
+      "O Ministério Adventista das Possibilidades está funcionando na sua igreja?"
+    ]
+  },
+  {
+    nome: "Crianças",
+    icon: "🧒",
+    perguntas: [
+      "Número de Classes Bíblicas com crianças e adolescentes.",
+      "Número de projetos de Discipulado em funcionamento (Escola de Pais, Tudo Começa em Casa, Amigos de Jesus).",
+      "Número de programas/projetos comunitários com a participação de crianças e adolescentes.",
+      "Número de Escolas Cristãs de Férias (ECF) realizadas.",
+      "Número de crianças que participaram da ECF (total).",
+      "Número de crianças adventistas que participaram da ECF.",
+      "Possuem um(a) Coordenador(a) do Ministério da Criança e do Ministério do Adolescente?",
+      "Número de treinamentos de líderes e professores nos cursos de liderança (MC/MA) — Associação/Missão."
+    ]
+  },
+  {
+    nome: "Mulher",
+    icon: "👩",
+    perguntas: [
+      "Foi realizado neste trimestre a Semana de Evangelismo na sua igreja e/ou comunidade?",
+      "Foi realizado neste trimestre o projeto "Quebrando o Silêncio" na igreja e/ou comunidade?"
+    ]
+  },
+  {
+    nome: "Recepção",
+    icon: "🤗",
+    perguntas: [
+      "A igreja possui um coordenador de recepção e a equipe está atuante?",
+      "A igreja realiza a ação semanal? (Recepção atuante em todos os cultos, registro de dados dos amigos, contato com eles durante a semana e encaminhamento de suas solicitações.)",
+      "A igreja realiza a ação mensal? (Instrução para os membros serem acolhedores.)",
+      "A igreja realiza a ação trimestral? (Reunião de avaliação do trabalho, treinamento da equipe e preenchimento do relatório.)"
+    ]
+  },
+  {
+    nome: "Saúde",
+    icon: "💚",
+    perguntas: [
+      "Funciona o Clube Vida e Saúde?",
+      "Quantas Feiras de Saúde foram realizadas?",
+      "Foram realizados cursos de cozinha saudável?",
+      "Foi realizado algum programa de saúde mental e emocional?"
+    ]
+  },
+  {
+    nome: "Publicações",
+    icon: "📰",
+    perguntas: [
+      "A igreja tem um Coordenador de Publicações?",
+      "Houve alguma atividade (sermão, palestra ou seminário) sobre o tema do "Espírito de Profecia"?"
+    ]
+  },
+  {
+    nome: "Jovem",
+    icon: "🌟",
+    perguntas: [
+      "Foi realizada a Semana Jovem?",
+      "Número de participantes do Maranata Academy.",
+      "Número de doadores de sangue e/ou medula que participaram do projeto Vida por Vidas.",
+      "Realizou a celebração do Dia Mundial do Jovem Adventista (Global Youth Day)?"
+    ]
+  },
+  {
+    nome: "Liberdade Religiosa",
+    icon: "🕊️",
+    perguntas: [
+      "Houve alguma atividade (sermão, palestra ou seminário) sobre o tema da "Liberdade Religiosa"?"
+    ]
+  }
+];
+
+let deptoAtual = null;
+
+// Monta grid de departamentos
+const grid = document.getElementById('depto-grid');
+DADOS.forEach((d, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'depto-btn';
+  btn.innerHTML = `<span class="depto-icon">${d.icon}</span><span class="depto-nome">${d.nome}</span>`;
+  btn.onclick = () => abrirFormulario(i);
+  grid.appendChild(btn);
+});
+
+function abrirFormulario(index) {
+  const nome = document.getElementById('nome-responsavel').value.trim();
+  if (!nome) {
+    document.getElementById('nome-responsavel').focus();
+    document.getElementById('nome-responsavel').style.borderColor = '#e74c3c';
+    setTimeout(() => document.getElementById('nome-responsavel').style.borderColor = '', 1800);
+    alert('Por favor, informe seu nome antes de continuar. 😊');
+    return;
+  }
+
+  deptoAtual = index;
+  const d = DADOS[index];
+
+  document.getElementById('form-icon').textContent = d.icon;
+  document.getElementById('form-titulo').textContent = d.nome;
+  document.getElementById('form-subtitulo').textContent = `${d.perguntas.length} pergunta${d.perguntas.length > 1 ? 's' : ''} para responder`;
+
+  const container = document.getElementById('perguntas-container');
+  container.innerHTML = '';
+
+  d.perguntas.forEach((p, i) => {
+    const bloco = document.createElement('div');
+    bloco.className = 'pergunta-bloco';
+    bloco.innerHTML = `
+      <span class="pergunta-numero">Pergunta ${i + 1}</span>
+      <div class="pergunta-texto">${p}</div>
+      <textarea class="resposta-input" id="resp-${i}" rows="2" placeholder="Digite sua resposta aqui..."></textarea>
+    `;
+    container.appendChild(bloco);
+  });
+
+  // Atualiza barra de progresso ao digitar
+  d.perguntas.forEach((_, i) => {
+    document.getElementById(`resp-${i}`).addEventListener('input', atualizarProgresso);
+  });
+  atualizarProgresso();
+
+  document.getElementById('tela-selecao').style.display = 'none';
+  document.getElementById('tela-formulario').style.display = 'block';
+  document.getElementById('tela-confirmacao').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function atualizarProgresso() {
+  const d = DADOS[deptoAtual];
+  let preenchidas = 0;
+  d.perguntas.forEach((_, i) => {
+    const val = document.getElementById(`resp-${i}`)?.value.trim();
+    if (val) preenchidas++;
+  });
+  const pct = d.perguntas.length > 0 ? (preenchidas / d.perguntas.length) * 100 : 0;
+  document.getElementById('progresso-fill').style.width = pct + '%';
+}
+
+function voltarSelecao() {
+  document.getElementById('tela-selecao').style.display = 'block';
+  document.getElementById('tela-formulario').style.display = 'none';
+  document.getElementById('tela-confirmacao').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function voltarFormulario() {
+  document.getElementById('tela-formulario').style.display = 'block';
+  document.getElementById('tela-confirmacao').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function gerarMensagem() {
+  const nome = document.getElementById('nome-responsavel').value.trim();
+  const d = DADOS[deptoAtual];
+
+  let linhas = [];
+  linhas.push(`✝️ *RELATÓRIO INTEGRADO*`);
+  linhas.push(`📋 *Departamento: ${d.nome} ${d.icon}*`);
+  linhas.push(`👤 *Responsável: ${nome}*`);
+  linhas.push(`📅 *Data: ${new Date().toLocaleDateString('pt-BR')}*`);
+  linhas.push('');
+  linhas.push('─'.repeat(30));
+
+  d.perguntas.forEach((p, i) => {
+    const resp = document.getElementById(`resp-${i}`)?.value.trim() || '_(não respondido)_';
+    linhas.push('');
+    linhas.push(`*${i + 1}. ${p}*`);
+    linhas.push(`➡️ ${resp}`);
+  });
+
+  linhas.push('');
+  linhas.push('─'.repeat(30));
+  linhas.push('_Enviado via Relatório Integrado_');
+
+  const mensagem = linhas.join('\n');
+
+  document.getElementById('preview-texto').textContent = mensagem;
+
+  // Número do WhatsApp — coloque o número aqui (com DDI)
+  // Exemplo Brasil: 5511999999999
+  const numero = ''; // ← DEIXE VAZIO PARA ABRIR SEM NÚMERO FIXO, OU PREENCHA COM SEU NÚMERO
+  const url = numero
+    ? `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`
+    : `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+
+  document.getElementById('btn-wpp-enviar').onclick = () => {
+    window.open(url, '_blank');
+  };
+
+  document.getElementById('tela-formulario').style.display = 'none';
+  document.getElementById('tela-confirmacao').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
